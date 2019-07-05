@@ -51,7 +51,7 @@ class Movie extends Component {
 			}
 		}
 		catch(e) {
-			console.log("There was an error in Movie Component: ", e)
+			console.log("There was an error in Movie component: ", e)
 		}
 	}
 

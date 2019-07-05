@@ -27,39 +27,28 @@ class Home extends Component {
 
 		} else {
 			this.setState({loading: true})
-			const endpoint = `${API_URL}movie/popular?api_key=${API_KEY}&language=en-US&page=1`
-			this.fetchItems(endpoint)
+			//const endpoint = `${API_URL}movie/popular?api_key=${API_KEY}&language=en-US&page=1`
+			//this.fetchItems(endpoint)
+			this.fetchItems(this.createEndpoint("movie/popular", false, ""))
 		}
 	}
 
-	loadMoreItems = () => {
-		//console.log("TEST")
-		let endpoint = '';
-		this.setState({loading: true})
-
-		if (this.state.searchTerm === '') {
-			endpoint = `${API_URL}movie/popular?api_key=${API_KEY}&language=en-US&page=${this.state.currentPage + 1}`
-		} else {
-			endpoint = `${API_URL}search/movie?api_key=${API_KEY}&language=en-US&query=${this.state.searchTerm}&page=${this.state.currentPage + 1}`
-		}
-		this.fetchItems(endpoint)
+	createEndpoint = (type, loadMore, searchTerm) => {
+		return `${API_URL}${type}?api_key=${API_KEY}&language=en-US&page=${loadMore && this.state.currentPage + 1}&query=${searchTerm}`
 	}
 
-	searchItems = (searchTerm) => {
-		//console.log(searchTerm)
-		let endpoint = ''
+	updateItems = (loadMore, searchTerm) => {
 		this.setState({
-			movies: [],
+			movies: loadMore ? [...this.state.movies] : [],
 			loading: true,
-			searchTerm //searchTerm: searchTerm if parameter and prop name is same
+			searchTerm: loadMore ? this.state.searchTerm : searchTerm,
+		}, () => {
+			this.fetchItems(
+				!this.state.searchTerm 
+				? this.createEndpoint("movie/popular", loadMore, "")
+				: this.createEndpoint("search/movie", loadMore, this.state.searchTerm)
+			)
 		})
-
-		if (searchTerm === '') {
-			endpoint = `${API_URL}movie/popular?api_key=${API_KEY}&language=en-US&page=1`
-		} else {
-			endpoint = `${API_URL}search/movie?api_key=${API_KEY}&language=en-US&query=${searchTerm}`
-		}
-		this.fetchItems(endpoint)
 	}
 
 	fetchItems = async endpoint => {
@@ -79,7 +68,7 @@ class Home extends Component {
 			})
 		}
 		catch(e) {
-			console.log("There was an error: ", e)
+			console.log("There was an error in Home component: ", e)
 		}
 	}
 
@@ -96,7 +85,7 @@ class Home extends Component {
 						title={heroImage.original_title}
 						text={heroImage.overview}
 					/>
-					<SearchBar callback={this.searchItems} />
+					<SearchBar callback={this.updateItems} />
 				</div> : null }
 				<div className="rmdb-home-grid">
 					<FourColGrid 
@@ -115,7 +104,7 @@ class Home extends Component {
 					</FourColGrid>
 					{loading ? <Spinner /> : null}
 					{(currentPage <= totalPages && !loading) ? 
-						<LoadMoreBtn text="Load More" onClick={this.loadMoreItems} /> : null }
+						<LoadMoreBtn text="Load More" onClick={this.updateItems} /> : null }
 				</div>
 			</div>
 		)
