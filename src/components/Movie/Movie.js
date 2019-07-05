@@ -55,36 +55,6 @@ class Movie extends Component {
 		}
 	}
 
-	// fetchItems = (endpoint) => {
-	// 	fetch(endpoint)
-	// 	.then(result => result.json())
-	// 	.then(result => {
-	// 		//console.log(result)
-	// 		if(result.status_code) {
-	// 			this.setState({loading:false})
-	// 		} else {
-	// 			this.setState({movie:result}, () => {
-	// 				//then fetch actors in the setState callback function
-	// 				const endpoint = `${API_URL}movie/${this.props.match.params.movieId}/credits?api_key=${API_KEY}`
-	// 				fetch(endpoint)
-	// 				.then(result => result.json())
-	// 				.then(result => {
-	// 					const directors = result.crew.filter((member) => member.job === "Director")
-	// 					this.setState({
-	// 						actors:result.cast,
-	// 						directors,
-	// 						loading:false
-	// 					}, () => {
-	// 						sessionStorage.setItem(`${this.props.match.params.movieId}`, JSON.stringify(this.state))
-	// 					})
-	// 				})
-	// 			})
-	// 		}
-
-	// 	})
-	// 	.catch(error => console.error('Error:', error))
-	// }
-
 	render() {
 		return (
 			<div className="rmdb-movie">

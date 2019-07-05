@@ -83,26 +83,6 @@ class Home extends Component {
 		}
 	}
 
-	// fetchItems = (endpoint) => {
-	// 	fetch(endpoint) // make a promise
-	// 	.then(result => result.json()) //result to json
-	// 	.then(result => {
-	// 		//console.log(result)
-	// 		this.setState({
-	// 			movies: [...this.state.movies, ...result.results],
-	// 			heroImage: this.state.heroImage || result.results[0],
-	// 			loading: false,
-	// 			currentPage: result.page,
-	// 			totalPages: result.total_pages
-	// 		}, () => {
-	// 			if (this.state.searchTerm === "") {
-	// 				sessionStorage.setItem('HomeState', JSON.stringify(this.state))
-	// 			}
-	// 		})
-	// 	})
-
-	// }
-
 	render() {
 		// ES6 destructuring the state
 		const { movies, heroImage, loading, currentPage, totalPages, searchTerm } = this.state
