@@ -78,15 +78,15 @@ class Home extends Component {
 		//const { prop1, prop2 } = this.props
 		return (
 			<div className="rmdb-home">
-			{heroImage ? //if heroImage exists
+			{heroImage && !searchTerm ? //if heroImage exists and searchTerm doesn't exist
 				<div>
 					<HeroImage
 						image={`${IMAGE_BASE_URL}${BACKDROP_SIZE}${heroImage.backdrop_path}`}
 						title={heroImage.original_title}
 						text={heroImage.overview}
 					/>
-					<SearchBar callback={this.updateItems} />
 				</div> : null }
+					<SearchBar callback={this.updateItems} />
 				<div className="rmdb-home-grid">
 					<FourColGrid 
 						header={searchTerm ? 'Search Result' : 'Popular Movies'}
@@ -103,7 +103,7 @@ class Home extends Component {
 					})}
 					</FourColGrid>
 					{loading ? <Spinner /> : null}
-					{(currentPage <= totalPages && !loading) ? 
+					{(currentPage < totalPages && !loading) ? 
 						<LoadMoreBtn text="Load More" onClick={this.updateItems} /> : null }
 				</div>
 			</div>
