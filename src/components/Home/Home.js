@@ -62,25 +62,46 @@ class Home extends Component {
 		this.fetchItems(endpoint)
 	}
 
-	fetchItems = (endpoint) => {
-		fetch(endpoint) // make a promise
-		.then(result => result.json()) //result to json
-		.then(result => {
-			//console.log(result)
+	fetchItems = async endpoint => {
+		const { movies, heroImage, searchTerm } = this.state
+		const result = await (await fetch(endpoint)).json()
+		try {
 			this.setState({
-				movies: [...this.state.movies, ...result.results],
-				heroImage: this.state.heroImage || result.results[0],
+				movies: [...movies, ...result.results],
+				heroImage: heroImage || result.results[0],
 				loading: false,
 				currentPage: result.page,
 				totalPages: result.total_pages
 			}, () => {
-				if (this.state.searchTerm === "") {
+				if (searchTerm === "") {
 					sessionStorage.setItem('HomeState', JSON.stringify(this.state))
 				}
 			})
-		})
-
+		}
+		catch(e) {
+			console.log("There was an error: ", e)
+		}
 	}
+
+	// fetchItems = (endpoint) => {
+	// 	fetch(endpoint) // make a promise
+	// 	.then(result => result.json()) //result to json
+	// 	.then(result => {
+	// 		//console.log(result)
+	// 		this.setState({
+	// 			movies: [...this.state.movies, ...result.results],
+	// 			heroImage: this.state.heroImage || result.results[0],
+	// 			loading: false,
+	// 			currentPage: result.page,
+	// 			totalPages: result.total_pages
+	// 		}, () => {
+	// 			if (this.state.searchTerm === "") {
+	// 				sessionStorage.setItem('HomeState', JSON.stringify(this.state))
+	// 			}
+	// 		})
+	// 	})
+
+	// }
 
 	render() {
 		// ES6 destructuring the state
